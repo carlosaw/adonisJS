@@ -5,12 +5,14 @@ Route.group(()=>{
   Route.group(()=>{
 
     Route.get('/', 'PainelController.index');
-    Route.get('/usuarios', 'PainelController.usuarios');
 
-    Route.get('/usuarios/:id', 'PainelController.usuarioById')
-    .where('id', Route.matchers.number());
+    Route.get('/usuarios/:id?', 'PainelController.usuarioById')
+    .where('id', Route.matchers.number());// /^[0-9]+$/
+
     Route.get('/usuarios/:slug', 'PainelController.usuarioBySlug')
-    .where('id', Route.matchers.slug());
+    .where('id', Route.matchers.slug());// /^[a-z_-]+$/
+
+    Route.get('/docs/*', 'PainelController.docs');
 
   }).prefix('/painel/');
 

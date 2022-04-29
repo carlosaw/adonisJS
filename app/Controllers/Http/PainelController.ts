@@ -14,17 +14,29 @@ export default class PainelController {
     }        
   ];  
 
-  async index() {
-    return {response: 'Index do Painel'};
-  }
-
-  async usuarios() {
+  async index({request}) {
+    
     return {
-      user: this.users 
-    };   
+      response: 'Index do Painel',
+      headers: request.headers(),
+      language: request.language(),
+      method: request.method(),
+      ip: request.ip(),
+      ips: request.ips(),
+      qs: request.qs(),
+      url: request.url(),
+      completeUrl: request.completeUrl(),
+      all: request.all(),
+      only: request.only(['idade']),
+      except: request.except(['idade'])
+    };
   }
 
   async usuarioById({params}) {
+    if(!params['id']) {
+      return {users: this.users}
+    }
+
     let myRequestedUserId = params['id'];
     let myUser = this.users.find(user => user.id == myRequestedUserId);
     //return myRequestUserId;
@@ -32,7 +44,8 @@ export default class PainelController {
       return myUser;
     } else {
       return {error: 'Nenhum usuário encontrado!'};
-    }    
+    } 
+     
   }
 
   async usuarioBySlug({params}) {
@@ -44,5 +57,9 @@ export default class PainelController {
     } else {
       return {error: 'Nenhum usuário encontrado!'};
     }    
+  }
+
+  async docs({params}) {
+    return params['*'][2];
   }
 }
